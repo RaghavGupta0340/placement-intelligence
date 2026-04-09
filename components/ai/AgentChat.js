@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { BrainCircuit, Send, X, Sparkles, Wrench, ChevronDown } from 'lucide-react';
+import { createClient } from '@/lib/supabase/client';
 
 export default function AgentChat() {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,7 +15,21 @@ export default function AgentChat() {
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const [userId, setUserId] = useState(null);
+  const [userRole, setUserRole] = useState('student');
   const messagesEndRef = useRef(null);
+
+  useEffect(() => {
+    const supabase = createClient();
+    supabase.auth.getUser().then(({ data }) => {
+      if (data.user) {
+        setUserId(data.user.id);
+        // Get role from profiles
+        supabase.from('profiles').select('role').eq('id', data.user.id).single()
+          .then(({ data: p }) => { if (p) setUserRole(p.role || 'student'); });
+      }
+    });
+  }, []);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -33,7 +48,7 @@ export default function AgentChat() {
       const res = await fetch('/api/agent', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: userMsg }),
+        body: JSON.stringify({ message: userMsg, userId, userRole }),
       });
 
       const data = await res.json();

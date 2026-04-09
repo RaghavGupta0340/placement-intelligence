@@ -34,17 +34,24 @@ export default function LandingPage() {
 
       {/* Floating particles */}
       <div style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none', overflow: 'hidden' }}>
-        {[...Array(6)].map((_, i) => (
+        {[
+          { w: 5, h: 6, hue: 230, op: 0.2, top: 15, left: 20, dur: 4, del: 0 },
+          { w: 7, h: 5, hue: 250, op: 0.25, top: 35, left: 70, dur: 5, del: 0.5 },
+          { w: 4, h: 7, hue: 270, op: 0.18, top: 65, left: 40, dur: 6, del: 1 },
+          { w: 6, h: 4, hue: 290, op: 0.3, top: 80, left: 85, dur: 3.5, del: 1.5 },
+          { w: 5, h: 5, hue: 310, op: 0.22, top: 25, left: 55, dur: 4.5, del: 0.8 },
+          { w: 8, h: 6, hue: 330, op: 0.15, top: 50, left: 15, dur: 5.5, del: 1.2 },
+        ].map((p, i) => (
           <div key={i} style={{
             position: 'absolute',
-            width: 4 + Math.random() * 4,
-            height: 4 + Math.random() * 4,
+            width: p.w,
+            height: p.h,
             borderRadius: '50%',
-            background: `hsla(${230 + i * 20}, 80%, 60%, ${0.15 + Math.random() * 0.2})`,
-            top: `${10 + Math.random() * 80}%`,
-            left: `${10 + Math.random() * 80}%`,
-            animation: `float ${3 + Math.random() * 4}s ease-in-out infinite`,
-            animationDelay: `${Math.random() * 2}s`,
+            background: `hsla(${p.hue}, 80%, 60%, ${p.op})`,
+            top: `${p.top}%`,
+            left: `${p.left}%`,
+            animation: `float ${p.dur}s ease-in-out infinite`,
+            animationDelay: `${p.del}s`,
           }} />
         ))}
       </div>
