@@ -1,5 +1,6 @@
 import './globals.css';
 import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 export const metadata = {
   title: 'PlaceIQ — AI-Powered Placement Intelligence',
@@ -13,6 +14,7 @@ export default function RootLayout({ children }) {
       <body>
         {children}
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
